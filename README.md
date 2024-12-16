@@ -1,2 +1,2 @@
 # GitHashingExercise
-This is about assignment No. 4
+In here you will find a .sh script that hashes a 4-digit number. Essentially, hashing is about transforming an input to a fixed size output. I use the SHA-256 algorithm. It always outputs 32 bytes. It is a one-way,deterministic process. One way, because it does not account for determining the input based on output. Deterministic because the same input always translates to the same output. Pretty interesting! I also include the hash_output.txt file that contains the result.
