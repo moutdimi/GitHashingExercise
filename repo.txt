@@ -1,0 +1,5 @@
+These are the links used to clone the repository: 
+https://github.com/moutdimi/GitHashingExercise.git
+git@github.com:moutdimi/GitHashingExercise.git
+
+
