@@ -1,0 +1,96 @@
+Here we go!
+
+
+
+Example 1: 
+
+This code demonstrates process creation and handling. It uses fork() to create a child process. Whenever 
+this command is used, it returns two values. The child's PID for to the parent and 0 to the child itself.
+For negative PID values, we get an error message. For the expected 0, the child's PID is printed. The
+command ls -l through execpl(). For a succesfull execpl() the entirity of the child's process code becomes 
+ls -l. Otherwise an error message is printed. For a positive PID value, we are in the parent process. Both
+PIDs are printed in the console and wait(NULL) is called. It waits for child process termination (regardless
+of outcome). When the child process returns, the user is informed in the console. To run the code we compile
+as usual. The expected behaviour is the listing of the directory's contents in long format (ls -l) after the
+PIDs of both processes. Finally, we get the "Child has terminated" message. Note that order of the two first
+outputs may differ in an overloaded system.
+
+{we write} gcc -o something1 example1.c
+{we write} ./something1
+
+Parent Process: PID ={something} , Created Child PID = {something}
+
+{contents of repo in long format} 
+
+Parent Process: Child has terminated.
+
+Example 2: 
+
+In this example we simply get and print process PIDs. We get the current PID through getpid() and the 
+parent's through getppid(). Then two simple print stements follow. Note that we treat pid and ppid values as
+integers.
+
+{we write} gcc -o something2 example2.c
+{we write} ./something2
+
+Current Process ID (PID): {something}
+Parent Process ID (PPID): {something}
+
+Example 3:
+
+This example is essentially part 1 of this assignment. In the first function, a success message containing
+the SIGINT's id is printed. In the main function, the program prints the process ID using getpid(). The 
+user is instructed to press Ctrl+C to activate the signal. The while loop runs perpetually and prints a 
+message that informs the user that the process is running. The sleep command delays the printing. Upon
+succesfull detection a message is printed. Otherwise we get an error message. 
+
+{we write} gcc -o something3 example3.c 
+{we write} ./something3
+
+Process ID: {something} 
+Press Ctrl+C to trigger SIGINT.
+Running... Press Ctrl+C to exit.
+{we press Ctrl+C}
+Caught signal 2 (SIGINT). Exiting gracefully...
+
+Example 4:
+
+This is the mischievous cousin of the previous example. It works basically the same way. The custom signal
+handler however, is designed to acknowledge and then ignore the SIGINT. The infinite loop continues to run. 
+The key difference is the exit() command that's missing. It contains the same error handling as Example 3.
+The program runs indefinately until a handler like SIGKILL is sent.
+
+{we write} gcc -o something4 example4.c
+{we write} ./something4
+
+Process ID: {something} 
+Press Ctrl+C to attempt to send SIGINT.
+Running... Try pressing Ctrl+C.
+Running...Try pressing Ctrl+C.
+{we press Ctrl+C} 
+Recieved SIGINT (signal 2), but ignoring it. 
+Running...Try oressing Ctrl+C.
+
+Example 5:
+
+Well that's a long program. Anyway. A custom signal handler is defined. It prints a message on the console
+whenever (wherever) the SIGUSR1 signal is caught. The handler is contained within a child process. Said
+process is created through fork() in the main function. Upon succefull creation, the else block is 
+executed. The if provied error handling for unsuccefull creation. In the else if block the signal handler 
+is registered. The infinite while loop keeps the process alive. Pause is used to wait for signals. Now let's 
+examine what each process does. The parent prints all the family IDs. After sleeping, it sends a SIGUSR1 
+through kill(pid,SIGUSR1). Then it proceeds to kill the child (don't take it out of context)  and waits for
+it to exit. The child registers the handler. Prints its own ID. It then activates an infinite loop that 
+uses pause() to wait for signals. After acknowledging SIGUSR1, it proceeds to wait again. I think that the 
+main point of the example is the demonstration of process communication through signaling. 
+
+{we write} gcc -o something5 example5.c
+{we write} ./something5
+
+Parent Process ID: {something}. Child PID: {something}.
+Child process ID: {something}. Waiting for SIGUSR1.
+Parent sending SIGUSR1 to child. 
+Child recieved SIGUSR1 (signal 10). 
+Parent sending SIGTERM to child. 
+Child process terminated.
+ 
